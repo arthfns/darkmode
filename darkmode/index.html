@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seletor de temas - Tailwind</title>
+    <link rel="stylesheet" href="/src/style.css">
+    <!-- 
+    Script ANTI-FUC (Flash of Unstyled Content):
+    Executa imediatamente no carregamento da tag <head>
+    para envitar que a tela pisque em branco caso o tema salvo 
+    no localStorage ou no sistema seja dark
+    -->
+    <script>
+        const temaSalvo = localStorage.getItem('theme');
+        const prefereEscuro = window.mathMedia('(prefers-color-scheme: dark)').matches;
+
+        if(temaSalvo === 'dark' || (!temaSalvo && prefereEscuro)){
+            document.documentElement.classList.add('dark');
+        }else{
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</head>
+<body class="bg-slate-100 text-slate-800 dark:bg-salte-900 dark:text-slate-100
+            min-h-screen flex items-center justify-center p-4 transition-colors duration-300">
+            <main class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 sm:p-8 rounded-2xl shadow-xl
+            max-w-md w-full transition-colors duration-300">
+        <header class="mb-6">
+            <h1 class="text-2xl font-bold mb-2">
+                        Gerenciador de temas
+            </h1>
+            <p class="text-slate-500 dark:text-slate-400 text-sm">
+                        Alterne entre os modos Claro, Escuro e sistema
+            </p>
+        </header>
+        <div class="grid grid-cols-3 gap-2 p-1.5 bg-slate-100 dark:bg-slate-900 rounded-xl mb-6">
+            <!-- Botão Claro -->
+             <button id="btnLight" type="button" class="py-2 px-3 text-xs sm:text-sm font-medium
+             rounded-lg transition-all duration-200">
+            Claro
+            </button>
+            <button id="bntDark" type="button" class="py-2 px-3 text-xs sm:text-sm font-medium
+                         rounded-lg transition-all duration-200">
+                Escuro
+            </button>
+            <button id="btnSystem" type="button" class="py-2 px-3 text-xs sm:text-sm font-medium
+                         rounded-lg transition-all duration-200">
+                Sistema
+            </button>
+        </div>
+        <!-- área administrativa de conteúdo -->
+         <section class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50
+         border border-slate-200/60 dark:border-slate-700/60">
+        <span class="text-xs font-semibold uppercase tracking-wider text-brand-primary">
+            Status atual 
+        </span>
+        <p id="statusTexto" class="text-sm mt-1 font-medium">
+            Carregando preferências...
+        </p>
+        </section>
+        </main>
+    <!-- Logica em JavaScript para a manipulação do tema -->
+     <script>
+        //Mapeamento dos elementos do DOM
+        const htmlElem = document.documentElement;
+        const btnLight = document.getElementById('btnLight');
+        const btnDark = document.getElementById('btnDark');
+        const btnSystem = document.getElementByid('btnSystem');
+        const statusTexto = document.getElementById('statusTexto');
+
+        //Escuta preferências do SO via Media Query
+        const mediaQueryDdark = window.matchMedia('(prefers-colors-scheme: dark)');
+
+        //Estilos para destacar o botão ativo
+        const classeAtivo = ['bg-white','bg-slate-700','shadow-sm','text-slate-900','dark:slate-white'];
+        const classeInativo = ['text-slate-500','dark:text-slate-400','hover:text-slate-900','dark:hover:text-white'];
+
+        //Função para atualizar a interface dos botões
+        function atualziarBotoes(opcaoAtiva){
+            [btnLight,btnDark,btnSystem].forEach(btn =>{
+                btn.classList.remove(...classeAtivo);
+                btn.classList.add(...classeInativo);
+            });
+            if(opcaoAtiva === 'light'){
+                btnLight.classList.add(...classeAtivo);
+                btnLight.classList.remove(...classeInativo);
+            }else if (opcaoAtiva === 'dark'){
+                btnDark.classList.add(...classeAtivo);
+                btnDark.classList.remove(...classeInativo);
+            }else {
+                btnSystem.classList.add(...classeAtivo);
+                btnSystem.classList.remove(...classeInativo);
+            }
+        }
+     </script>
+</body>
+</html>
